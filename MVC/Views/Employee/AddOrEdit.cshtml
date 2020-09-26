@@ -1,0 +1,21 @@
+﻿@model MVC.Models.mvcEmployeeModel
+@{
+    ViewBag.Title = "AddOrEdit";
+}
+
+<h2>AddOrEdit</h2>
+
+<div class="form-body">
+    @using (Html.BeginForm())
+    {
+        @* Hidden field for employeeid*@
+        @Html.HiddenFor(model => model.EmployeeId)
+
+        <div class="form-group">
+            @Html.LabelFor(model =>model.Name)
+            @Html.EditorFor(model =>model.Name)
+            @*add validation control to this property*@
+            @Html.ValidationMessageFor(model =>model.Name)
+            </div>
+    }
+</div>

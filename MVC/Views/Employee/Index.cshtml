@@ -1,0 +1,57 @@
+﻿@model IEnumerable<MVC.Models.mvcEmployeeModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br/>
+
+@*We have to create a view for create action.it will be 'AddOrEdit'.select an icon for this create New button in the website
+    fontawesome.io/icons*@
+<p>
+    <a href="@Url.Action("AddOrEdit", "Employee")" class="btn btn-default"><i class="fa fa-plus"></i>Create New</a>
+</p>
+@*Adding onemore class from bootstrap*@
+<table class="table table-striped">
+    @*Enclose below in thead tag*@
+    <thead class="table-heading">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Position)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Position)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Salary)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
