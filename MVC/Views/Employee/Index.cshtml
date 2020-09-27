@@ -47,11 +47,34 @@
             @Html.DisplayFor(modelItem => item.Salary)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @*Controller name will be Employee and pass the id.We are iterating through the employee collection,so we can see the e,ployeeid using 
+                foreach variable 'item' as above.and set the class to bootstrap.Build it and if u click on Edit, it will go to AddOrEdit in EmployeeController class in MVC
+                ,where we passed an id = o*@
+            <a href="@Url.Action("AddOrEdit","Employee", new { id = item.EmployeeId})" class= "btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
+            <a onclick="Delete(@item.EmployeeId)" class="btn btn-default"><i class="fa fa-trash"></i> Delete</a>
         </td>
     </tr>
 }
 
 </table>
+
+@section scripts{
+    <script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+            });
+
+        function Delete(id) {
+            //3rd param function will be called when the user confirms this operation
+            alertify.confirm('Web Api CRUD Operations', 'Are you Sure to Delete this Record ?', function () {
+                //inside here,call the delete action method .controller name will be Employee
+                window.location.href = '@Url.Action("Delete","Employee")/' + id;
+            },null )//4th param will be a f/n u call when u cancel this operation.just kept null as i dont have to do anything
+            //Back to EMployeeController to impleement delete action method
+            //Back to EMployeeController to impleement delete action method
+            } )
+        }
+    </script>
+    }

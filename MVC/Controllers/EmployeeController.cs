@@ -34,14 +34,59 @@ namespace MVC.Controllers
 
         //this httpget method has the parameter id with default value '0' 
         public ActionResult AddOrEdit(int id = 0)
-        {//return a view from the action.pass the object of employeemodel class to this view. now add view
-            return View(new mvcEmployeeModel());
+
+        {
+            //When user clicks on Edit icon, user needs to fill the details of the selected employee to edit
+            if(id==0)
+            //return a view from the action.pass the object of employeemodel class to this view. now add view
+            return View(new mvcEmployeeModel());//return empty form
+            else //for this call http method(GetEmployee(int id) of webapi project from this controller and pass the url and id
+            {
+                HttpResponseMessage response = GlobalVariables.WebApiClient.GetAsync("Employee/"+id.ToString()).Result;
+                //We have to convert the above into mvcEmployee model
+                return View(response.Content.ReadAsAsync<mvcEmployeeModel>().Result);
+            }
         }
 
-        public ActionResult AddOrEdit()
-        {//return a view from the action
-            return View();
+        //add an object of mvcEmployeeModel emp
+        public ActionResult AddOrEdit(mvcEmployeeModel emp)
+        {
+            //Inside the post operation, lets do the insert or update operation based on the Employeeid
+            if (emp.EmployeeId == 0)
+            { //then do create operation
+
+                //To implement insert method,lets first call Http method from web Api project.go to webapi project,controller.go to EmployeeController.cs
+                //in http post method .We will be calling this(PostEmploye) http method from post action to insert.Pass the base address "Employee"
+                //and the model object 'emp'.This(GlobalVariables.WebApiClient.PostAsJsonAsync("Employee", emp) Web api call will insert new records into our Employee
+                //table and will store the core results inside this response object
+                HttpResponseMessage response = GlobalVariables.WebApiClient.PostAsJsonAsync("Employee", emp).Result;
+
+                //Now Pass the success message inside Temp data.To show this message ,add script file inside index view in views folder<Employee<Index.cshtml in the end
+                TempData["SuccessMessage"] = "Saved Successfully";
+            }
+            else //do the update operation
+            { //call the http method PutEmployee
+                HttpResponseMessage response = GlobalVariables.WebApiClient.PutAsJsonAsync("Employee/"+emp.EmployeeId, emp).Result;
+                TempData["SuccessMessage"] = "Updated Successfully";
+            }
+
+            //after insert operation redirect to index action methods.
+            return RedirectToAction("Index");
+            //return a view from the action
+            //return View();
+        }
+
+        //inside it call the webapi method deleteEmployee
+        public ActionResult Delete(int id)
+        {
+            HttpResponseMessage response = GlobalVariables.WebApiClient.DeleteAsync("Employee/"+id.ToString()).Result;
+
+            TempData["SuccessMessage"] = "Deleted Successfully";
+            return RedirectToAction("Index");
+
         }
     }
-}
+    // To show some notification messages to show a message that records have been updated successfully.Add a new plugin "AlertifyJS".
+}//click on mvc project,Manage nuget packages.After installation,add a reference of it in the layout page.It will be in the content folder of mvc.
+//Also add the refernce of themes in the css inside layout page and in the bottom add the script refernce of alertify
 
