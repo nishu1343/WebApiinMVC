@@ -21,13 +21,18 @@
                 </button>
                 @Html.ActionLink("Employee Register", "Index", "Employee", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("MvcEmployeeModel", "Index", "Employee")</li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>Web Api CRUD Operations in MVC Project</p>
+            <p>&copy; @DateTime.Now.Year  - Web Api CRUD Operations in MVC Project</p>
         </footer>
     </div>
 
